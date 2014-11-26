@@ -1,0 +1,20 @@
+{
+  "name": "rambler-task",
+  "version": "0.0.1",
+  "authors": [
+    "Eugeny Chuvelev <e.chuvelev@gmail.com>"
+  ],
+  "description": "calendar with notes",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "license": "MIT",
+  "homepage": "http://chuve.ru",
+  "private": true,
+  "dependencies": {
+    "backbone": "~1.1.2",
+    "jquery": "~2.1.1",
+    "reset-css": "~2.0.20110126"
+  }
+}

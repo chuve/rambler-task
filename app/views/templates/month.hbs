@@ -1,0 +1,9 @@
+{{#each this}}
+    {{#if startWeek}}<tr>{{/if}}
+    {{#if current}}
+            <td data-date="{{date}}" class="day {{#if weekend}}day--weekend{{/if}}"><span class="day__num">{{num}}</span></td>
+    {{else}}
+            <td data-date="{{date}}" class="day day--non-current"><span class="day__num">{{num}}</span></td>
+    {{/if}}
+    {{#if endWeek}}</tr>{{/if}}
+{{/each}}

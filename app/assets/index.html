@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Example brunch application</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="stylesheets/app.css">
+  <script src="javascripts/vendor.js"></script>
+  <script src="javascripts/app.js"></script>
+  <script>require('initialize');</script>
+</head>
+<body>
+<div class="notes">
+    <div class="notes__header" data-view="header-view">
+        <div class="notes__header-trigger" data-click="prev-month"><<</div>
+        <div class="notes__state">
+            <span data-bind="state-month">Ноябрь</span>
+            <span data-bind="state-year">2014</span>
+        </div>
+        <div class="notes__header-trigger" data-click="next-month">>></div>
+    </div>
+    <table class="notes__body">
+        <thead>
+        <tr>
+            <td>пн</td>
+            <td>вт</td>
+            <td>ср</td>
+            <td>чт</td>
+            <td>пт</td>
+            <td>сб</td>
+            <td>вс</td>
+        </tr>
+        </thead>
+        <tbody data-bind="date-of-the-month"></tbody>
+    </table>
+    <div class="notes__form" data-view="form-view"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+// nib is a powerful lib for stylus that provides cross-browser css3 mixins.
+// No more vendor prefixes. http://visionmedia.github.com/nib/
+@import 'nib'
+
+html,
+body
+  height 100%
+
+.notes
+  box-sizing border-box
+  height 100%
+  width 100%
+  max-width 960px
+  margin 0 auto
+  font-family sans-serif
+  -webkit-font-smoothing antialiased
+
+  @media screen and (min-width: 1024px)
+    padding 5%
+
+  &__header
+    box-sizing border-box
+    width 100%
+    text-align center
+    padding 15px 10px
+    background-color rgb(238, 238, 238)
+
+    &-trigger
+      display inline-block
+      cursor pointer
+
+      &[data-click="prev-month"]
+        float left
+
+      &[data-click="next-month"]
+        float right
+
+  &__state
+    display inline-block
+    font-weight bold
+    text-transform uppercase
+    color #222222
+
+  &__body
+    height 100%
+    width 100%
+    border-collapse collapse
+    font-size 1.5em
+
+    @media screen and (max-width: 1024px)
+      font-size 0.8em
+
+    thead
+      font-weight bold
+
+      td
+        background-color rgb(112, 196, 105)
+        color white
+        padding 0.6em
+        font-weight normal
+        text-align center
+        text-transform uppercase
+
+    tbody
+      td
+        background-color rgb(238, 238, 238)
+        color rgb(111, 111, 111)
+        text-align center
+        padding 5px 0
+
+    .day
+      &__num
+        display inline-block
+        font-size 1.5em
+        height 65px
+        width 65px
+        line-height 65px
+
+        @media screen and (max-width: 1024px)
+          height 40px
+          width 40px
+          line-height 40px
+
+      &--planned
+        .day__num
+          border-radius 50%
+          background #C5BD69
+          color #fff
+
+      &--weekend
+        color tomato
+
+      &--non-current
+        color rgb(210, 210, 210)
