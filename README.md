@@ -1,5 +1,7 @@
 #Rambler-task
-Calendar with notes
+Calendar with notes 
+
+Example: [http://chuve.github.io/rambler-task/](http://chuve.github.io/rambler-task/)
 
 ##Todo list
 - form view for add notes
