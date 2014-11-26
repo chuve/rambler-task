@@ -48,7 +48,8 @@ body
     font-size 1.5em
 
     @media screen and (max-width: 1024px)
-      font-size 0.8em
+      &
+        font-size 0.8em
 
     thead
       font-weight bold
@@ -77,9 +78,10 @@ body
         line-height 65px
 
         @media screen and (max-width: 1024px)
-          height 40px
-          width 40px
-          line-height 40px
+          &
+            height 40px
+            width 40px
+            line-height 40px
 
       &--planned
         .day__num
