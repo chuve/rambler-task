@@ -7,6 +7,7 @@ body
   height 100%
 
 .notes
+  position relative
   box-sizing border-box
   height 100%
   width 100%
@@ -19,11 +20,13 @@ body
     padding 5%
 
   &__header
+    position relative
     box-sizing border-box
     width 100%
     text-align center
     padding 15px 10px
     background-color rgb(238, 238, 238)
+    z-index 2000
 
     &-trigger
       display inline-block
@@ -42,10 +45,17 @@ body
     color #222222
 
   &__body
+    transition all 1s
     height 100%
     width 100%
     border-collapse collapse
     font-size 1.5em
+    position absolute
+    top -100%
+    z-index 1000
+
+    &--show
+      top 46px
 
     @media screen and (max-width: 1024px)
       &
@@ -94,3 +104,28 @@ body
 
       &--non-current
         color rgb(210, 210, 210)
+
+  &__form
+    width 100%
+    height 100%
+    position absolute
+    top -100%
+    transition all 1s
+    z-index 1000
+
+    &--show
+      top 46px
+
+    input,
+    textarea
+      display block
+      margin 0 auto
+      width 95%
+
+    a[data-click]
+      cursor pointer
+      text-align center
+      display block
+      padding 10px 20px
+      margin 5px 0
+      border 1px solid black

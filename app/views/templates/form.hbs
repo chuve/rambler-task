@@ -1,13 +1,17 @@
 <form>
     <h2>Дата: {{date}}</h2>
-    <div>
-        <label for="title">День под девизом</label>
+    <div class="notes__form__input-group">
+        <label class="notes__form__label" for="title">День под девизом</label>
         <input type="text" name="title" value="{{title}}">
     </div>
-    <div>
-        <label for="text">Заметки</label>
-        <textarea name="text" id="" cols="30" rows="10">{{text}}</textarea>
+    <div class="notes__form__input-group">
+        <textarea name="text" id="">{{text}}</textarea>
     </div>
-    <a data-click="save">Сохранить</a>
-    <a data-click="cancel">Отмена</a>
+    <div class="notes__form__input-group">
+        <a data-click="save">Сохранить</a>
+        <a data-click="cancel">Отмена</a>
+        {{#if model }}
+            <a data-click="remove">Удалить</a>
+        {{/if}}
+    </div>
 </form>

@@ -1,11 +1,11 @@
 /**
  * Created by Evgeny Chuvelev on 26/11/14.
  */
-var application = require('/application');
+var app = require('/application');
 var template = require('./templates/month');
 
 module.exports = Backbone.View.extend({
-    el: $('[data-bind="date-of-the-month"]'),
+    el: $('[data-view="month-view"]'),
 
     template: template,
 
@@ -13,14 +13,17 @@ module.exports = Backbone.View.extend({
         'click td': 'displayNote'
     },
 
-    imposeNote: function($el) {
-        $el.addClass('day--planned');
+    show: function() {
+      this.$el.addClass('notes__body--show');
+    },
+
+    hide: function() {
+        this.$el.removeClass('notes__body--show');
     },
 
     imposeNotes: function(){
-        var notes = application.notes.toJSON(),
-            $dates = this.$el.find('[data-date]'),
-            self = this;
+        var notes = app.notes.toJSON(),
+            $dates = this.$el.find('[data-date]');
 
         _.each(notes, function(note) {
             $dates.filter('[data-date="' + note.date + '"]').addClass('day--planned');
@@ -28,45 +31,41 @@ module.exports = Backbone.View.extend({
     },
 
     displayNote: function(event) {
-
-        console.log(application.notes);
-
         var $target = $(event.currentTarget),
             targetDate = $target.data('date'),
-            targetNoteInCollection = application.notes.findWhere({ date : targetDate}),
-            textNote;
+            targetNoteInCollection = app.notes.findWhere({ date : targetDate});
 
-        if ( targetNoteInCollection ) {
-            textNote = prompt('Введите текст', targetNoteInCollection.get('text'));
-            if (textNote && textNote.length) {
-                targetNoteInCollection.set('text', textNote);
-            }
-            return;
-        }
+        this.hide();
+        app.noteView.show();
 
-        textNote = prompt('Введите текст');
-        if ( textNote && textNote.length ) {
-            application.notes.add({
-                'date' : targetDate,
-                'text' : textNote
+        app.noteViewModel.set({
+            'date' : targetDate,
+            '$target' : $target,
+            'text' : '',
+            'title' : '',
+            'model' : ''
+        });
+
+        if (targetNoteInCollection) {
+            app.noteViewModel.set({
+                'title': targetNoteInCollection.get('title'),
+                'text': targetNoteInCollection.get('text'),
+                'model' : targetNoteInCollection
             });
-            this.imposeNote($target);
         }
-
-        return;
     },
 
     initialize: function() {
         this.render();
+        this.show();
     },
 
     render: function() {
-        var month = this.model.get('month'),
-            year = this.model.get('year'),
-            length = this.model.getMonthLength(),
-            firstWeekDay = this.model.getFisrtWeekDay(),
-            prevMonthLength = this.model.getPrevMonthLength(),
-            self = this;
+        var month = app.appModel.get('month'),
+            year = app.appModel.get('year'),
+            length = app.appModel.getMonthLength(),
+            firstWeekDay = app.appModel.getFisrtWeekDay(),
+            prevMonthLength = app.appModel.getPrevMonthLength();
 
         function getMonthModel(month, year, length) {
             var days = {},
@@ -75,7 +74,7 @@ module.exports = Backbone.View.extend({
             // add prev month days
             if (firstWeekDay !== 1) {
                 var prevMonthDays = (firstWeekDay !== 0) ? firstWeekDay - 1 : 6,
-                    pMonth = self.model.getPrevMonth();
+                    pMonth = app.appModel.getPrevMonth();
                 p = prevMonthLength - prevMonthDays + 1;
                 while (prevMonthDays) {
                     days[counter] = {
@@ -102,7 +101,7 @@ module.exports = Backbone.View.extend({
             // add next month days
             if (counter != 42) {
                 var nMonthDays = 42 - counter,
-                    nMonth = self.model.getNextMonth();
+                    nMonth = app.appModel.getNextMonth();
                 n = 1;
                 while (nMonthDays >= n) {
                     days[counter] = {
@@ -141,10 +140,10 @@ module.exports = Backbone.View.extend({
         }
 
 
-        var m = getMonthModel(month,year,length);
-        m = setWeeks(m);
+        var month = getMonthModel(month,year,length);
+        month = setWeeks(month);
 
-        this.$el.html(this.template(_.toArray(m)));
+        this.$el.find('[data-bind="date-of-the-month"]').html(this.template(_.toArray(month)));
         this.imposeNotes();
     }
 });

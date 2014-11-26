@@ -1,13 +1,14 @@
 /**
  * Created by Evgeny Chuvelev on 26/11/14.
  */
+var app = require('application');
 
 module.exports = Backbone.View.extend({
     el: $('[data-view="header-view"]'),
 
     initialize: function(){
-        this.model.on('change:year', this.updateYear, this);
-        this.model.on('change:month', this.updateMonth, this);
+        app.appModel.on('change:year', this.updateYear, this);
+        app.appModel.on('change:month', this.updateMonth, this);
     },
 
     events: {
@@ -16,20 +17,20 @@ module.exports = Backbone.View.extend({
     },
 
     prevMonth: function() {
-        this.model.setPrevMonth();
+        app.appModel.setPrevMonth();
     },
 
     nextMonth: function() {
-        this.model.setNextMonth();
+        app.appModel.setNextMonth();
     },
 
     updateYear: function() {
         var $yearPlacement = this.$el.find('[data-bind="state-year"]');
-        $yearPlacement.html(this.model.get('year'));
+        $yearPlacement.html(app.appModel.get('year'));
     },
 
     updateMonth: function() {
         var $monthPlacement = this.$el.find('[data-bind="state-month"]');
-        $monthPlacement.html(this.model.getMonthName());
+        $monthPlacement.html(app.appModel.getMonthName());
     }
 });

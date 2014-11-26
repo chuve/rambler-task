@@ -5,19 +5,18 @@ Application = {
           NoteRouter = require('lib/router'),
           NoteCollection = require('models/noteCollection'),
           NoteAppModel = require('models/appModel'),
-          NoteModel = require('models/noteModel'),
+          NoteViewModel = require('models/noteViewModel'),
           HeaderView = require('views/headerView'),
           MonthView = require('views/monthView'),
-          NoteFormView = require('views/formView');
+          NoteView = require('views/formView');
 
       app.router = new NoteRouter();
-      app.notes = new NoteCollection({});
+      app.notes = new NoteCollection();
       app.appModel = new NoteAppModel();
-      app.headerView = new HeaderView({ model : app.appModel });
-      app.monthView = new MonthView({ model : app.appModel, collection: app.notes, attributes: {
-          'formConst': NoteFormView,
-          'modelConst': NoteModel
-      }});
+      app.headerView = new HeaderView();
+      app.monthView = new MonthView();
+      app.noteViewModel = new NoteViewModel();
+      app.noteView = new NoteView({ model: app.noteViewModel });
 
       app.appModel.on('change', function() {
           var m = app.appModel.get('month'),
@@ -25,23 +24,7 @@ Application = {
           this.render(app.appModel);
           app.router.navigate('calendar/'+m+'-'+y);
       }, app.monthView);
-
-      app.router.on('route:calendar', function(month, year) {
-          var now = new Date(),
-              day = now.getDate();
-
-          month = parseInt(month) || now.getMonth() + 1;
-          year = parseInt(year) || now.getYear() + 1900;
-
-          app.appModel.set({
-              'month' : month,
-              'year' : year
-          });
-      });
-
-      app.router.on('route:note', function(){
-          console.log('Show form');
-      });
   }
 }
+
 module.exports = Application;

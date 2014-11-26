@@ -51,6 +51,7 @@ body {
   height: 100%;
 }
 .notes {
+  position: relative;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -67,6 +68,7 @@ body {
   }
 }
 .notes__header {
+  position: relative;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -74,6 +76,7 @@ body {
   text-align: center;
   padding: 15px 10px;
   background-color: #eee;
+  z-index: 2000;
 }
 .notes__header-trigger {
   display: inline-block;
@@ -92,10 +95,21 @@ body {
   color: #222;
 }
 .notes__body {
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -o-transition: all 1s;
+  -ms-transition: all 1s;
+  transition: all 1s;
   height: 100%;
   width: 100%;
   border-collapse: collapse;
   font-size: 1.5em;
+  position: absolute;
+  top: -100%;
+  z-index: 1000;
+}
+.notes__body--show {
+  top: 46px;
 }
 @media screen and (max-width: 1024px) {
   .notes__body {
@@ -145,6 +159,35 @@ body {
 }
 .notes__body .day--non-current {
   color: #d2d2d2;
+}
+.notes__form {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: -100%;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -o-transition: all 1s;
+  -ms-transition: all 1s;
+  transition: all 1s;
+  z-index: 1000;
+}
+.notes__form--show {
+  top: 46px;
+}
+.notes__form input,
+.notes__form textarea {
+  display: block;
+  margin: 0 auto;
+  width: 95%;
+}
+.notes__form a[data-click] {
+  cursor: pointer;
+  text-align: center;
+  display: block;
+  padding: 10px 20px;
+  margin: 5px 0;
+  border: 1px solid #000;
 }
 
 
