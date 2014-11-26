@@ -1,0 +1,151 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+html,
+body {
+  height: 100%;
+}
+.notes {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+@media screen and (min-width: 1024px) {
+ {
+    padding: 5%;
+  }
+}
+.notes__header {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+  padding: 15px 10px;
+  background-color: #eee;
+}
+.notes__header-trigger {
+  display: inline-block;
+  cursor: pointer;
+}
+.notes__header-trigger[data-click="prev-month"] {
+  float: left;
+}
+.notes__header-trigger[data-click="next-month"] {
+  float: right;
+}
+.notes__state {
+  display: inline-block;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #222;
+}
+.notes__body {
+  height: 100%;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.5em;
+}
+@media screen and (max-width: 1024px) {
+ {
+    font-size: 0.8em;
+  }
+}
+.notes__body thead {
+  font-weight: bold;
+}
+.notes__body thead td {
+  background-color: #70c469;
+  color: #fff;
+  padding: 0.6em;
+  font-weight: normal;
+  text-align: center;
+  text-transform: uppercase;
+}
+.notes__body tbody td {
+  background-color: #eee;
+  color: #6f6f6f;
+  text-align: center;
+  padding: 5px 0;
+}
+.notes__body .day__num {
+  display: inline-block;
+  font-size: 1.5em;
+  height: 65px;
+  width: 65px;
+  line-height: 65px;
+}
+@media screen and (max-width: 1024px) {
+ {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+  }
+}
+.notes__body .day--planned .day__num {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  background: #c5bd69;
+  color: #fff;
+}
+.notes__body .day--weekend {
+  color: #ff6347;
+}
+.notes__body .day--non-current {
+  color: #d2d2d2;
+}
+
+
+/*# sourceMappingURL=app.css.map*/
