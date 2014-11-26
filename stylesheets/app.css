@@ -98,7 +98,7 @@ body {
   font-size: 1.5em;
 }
 @media screen and (max-width: 1024px) {
- {
+  .notes__body {
     font-size: 0.8em;
   }
 }
@@ -127,7 +127,7 @@ body {
   line-height: 65px;
 }
 @media screen and (max-width: 1024px) {
- {
+  .notes__body .day__num {
     height: 40px;
     width: 40px;
     line-height: 40px;
