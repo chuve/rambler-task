@@ -1,6 +1,4 @@
 #Rambler-task
-
-##Description
 Calendar with notes
 
 ##Todo list
