@@ -17,7 +17,7 @@ exports.config =
       defaultExtension: 'styl'
       joinTo: 'stylesheets/app.css'
       order:
-        before: []
+        before: ['']
 
     templates:
       defaultExtension: 'hbs'

@@ -392,10 +392,12 @@ module.exports = Backbone.View.extend({
 
     hide: function() {
         this.$el.removeClass('notes__form--show');
+        app.headerView.showControls();
     },
 
     show: function() {
         this.$el.addClass('notes__form--show');
+        app.headerView.hideControls();
     },
 
     closeNote: function() {
@@ -477,6 +479,16 @@ module.exports = Backbone.View.extend({
     events: {
         'click [data-click="prev-month"]' : 'prevMonth',
         'click [data-click="next-month"]' : 'nextMonth'
+    },
+
+    hideControls: function() {
+      var $controls = $('[data-click]');
+      $controls.addClass('notes__header-trigger--hide');
+    },
+
+    showControls: function() {
+        var $controls = $('[data-click]');
+        $controls.removeClass('notes__header-trigger--hide');
     },
 
     prevMonth: function() {
@@ -662,22 +674,22 @@ function program1(depth0,data) {
   
   return "\n            <a data-click=\"remove\">Удалить</a>\n        ";}
 
-  buffer += "<form>\n    <h2>Дата: ";
+  buffer += "<form class=\"notes__form-wrapper\">\n    <div class=\"notes__form-date\">";
   foundHelper = helpers.date;
   stack1 = foundHelper || depth0.date;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
   else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "date", { hash: {} }); }
-  buffer += escapeExpression(stack1) + "</h2>\n    <div class=\"notes__form__input-group\">\n        <label class=\"notes__form__label\" for=\"title\">День под девизом</label>\n        <input type=\"text\" name=\"title\" value=\"";
+  buffer += escapeExpression(stack1) + "</div>\n    <div class=\"notes__form-title\">\n        <label class=\"notes__form-label\" for=\"title\">День под девизом</label>\n        <input type=\"text\" name=\"title\" id=\"title\" class=\"notes__form-title__input\" value=\"";
   foundHelper = helpers.title;
   stack1 = foundHelper || depth0.title;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
   else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "title", { hash: {} }); }
-  buffer += escapeExpression(stack1) + "\">\n    </div>\n    <div class=\"notes__form__input-group\">\n        <textarea name=\"text\" id=\"\">";
+  buffer += escapeExpression(stack1) + "\">\n    </div>\n    <div class=\"notes__form-text\">\n        <label class=\"notes__form-label\" for=\"text\">Заметка</label>\n        <textarea class=\"notes__form-text__textarea\" name=\"text\" id=\"\">";
   foundHelper = helpers.text;
   stack1 = foundHelper || depth0.text;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
   else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "text", { hash: {} }); }
-  buffer += escapeExpression(stack1) + "</textarea>\n    </div>\n    <div class=\"notes__form__input-group\">\n        <a data-click=\"save\">Сохранить</a>\n        <a data-click=\"cancel\">Отмена</a>\n        ";
+  buffer += escapeExpression(stack1) + "</textarea>\n    </div>\n    <div class=\"notes__buttons\">\n        <a data-click=\"save\">Сохранить</a>\n        <a data-click=\"cancel\">Отмена</a>\n        ";
   foundHelper = helpers.model;
   stack1 = foundHelper || depth0.model;
   stack2 = helpers['if'];

@@ -16,6 +16,16 @@ module.exports = Backbone.View.extend({
         'click [data-click="next-month"]' : 'nextMonth'
     },
 
+    hideControls: function() {
+      var $controls = $('[data-click]');
+      $controls.addClass('notes__header-trigger--hide');
+    },
+
+    showControls: function() {
+        var $controls = $('[data-click]');
+        $controls.removeClass('notes__header-trigger--hide');
+    },
+
     prevMonth: function() {
         app.appModel.setPrevMonth();
     },

@@ -19,10 +19,12 @@ module.exports = Backbone.View.extend({
 
     hide: function() {
         this.$el.removeClass('notes__form--show');
+        app.headerView.showControls();
     },
 
     show: function() {
         this.$el.addClass('notes__form--show');
+        app.headerView.hideControls();
     },
 
     closeNote: function() {

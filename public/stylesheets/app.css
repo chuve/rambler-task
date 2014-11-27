@@ -88,6 +88,9 @@ body {
 .notes__header-trigger[data-click="next-month"] {
   float: right;
 }
+.notes__header-trigger--hide {
+  display: none;
+}
 .notes__state {
   display: inline-block;
   font-weight: bold;
@@ -171,23 +174,57 @@ body {
   -ms-transition: all 1s;
   transition: all 1s;
   z-index: 1000;
+  background: #70c469;
+  text-align: center;
 }
 .notes__form--show {
   top: 46px;
 }
-.notes__form input,
-.notes__form textarea {
+.notes__form-wrapper {
+  height: 100%;
+}
+.notes__form-date {
+  font-size: 30px;
+  padding: 20px 0;
+}
+.notes__form-label {
+  font-size: 1em;
+  text-transform: uppercase;
   display: block;
-  margin: 0 auto;
+}
+.notes__form-title__input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
   width: 95%;
+  height: 50px;
+  margin: 10px auto 20px auto;
+  padding: 15px;
+  font-size: 1.5em;
+}
+.notes__form-text__textarea {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  width: 95%;
+  height: 200px;
+  margin: 10px auto 20px auto;
+  padding: 15px;
+  font-size: 1.2em;
 }
 .notes__form a[data-click] {
   cursor: pointer;
   text-align: center;
   display: block;
   padding: 10px 20px;
-  margin: 5px 0;
-  border: 1px solid #000;
+  margin: 5px auto;
+  color: #2c2c2c;
+  background: #eee;
+  font-size: 1em;
+  text-transform: uppercase;
+  max-width: 300px;
 }
 
 

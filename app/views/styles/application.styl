@@ -38,6 +38,9 @@ body
       &[data-click="next-month"]
         float right
 
+      &--hide
+        display none
+
   &__state
     display inline-block
     font-weight bold
@@ -112,20 +115,52 @@ body
     top -100%
     transition all 1s
     z-index 1000
+    background #70c469
+    text-align center
 
     &--show
       top 46px
 
-    input,
-    textarea
+    &-wrapper
+      height 100%
+
+    &-date
+      font-size 30px
+      padding 20px 0
+
+    &-label
+      font-size 1em
+      text-transform uppercase
       display block
-      margin 0 auto
-      width 95%
+
+    &-title
+      &__input
+        box-sizing border-box
+        display block
+        width 95%
+        height 50px
+        margin 10px auto 20px auto
+        padding 15px
+        font-size 1.5em
+
+    &-text
+      &__textarea
+        box-sizing border-box
+        display block
+        width 95%
+        height 200px
+        margin 10px auto 20px auto
+        padding 15px
+        font-size 1.2em
 
     a[data-click]
       cursor pointer
       text-align center
       display block
       padding 10px 20px
-      margin 5px 0
-      border 1px solid black
+      margin 5px auto
+      color #2c2c2c
+      background #eee
+      font-size 1em
+      text-transform uppercase
+      max-width 300px
