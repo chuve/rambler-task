@@ -98,19 +98,18 @@ Application = {
           NoteRouter = require('lib/router'),
           NoteCollection = require('models/noteCollection'),
           NoteAppModel = require('models/appModel'),
-          NoteModel = require('models/noteModel'),
+          NoteViewModel = require('models/noteViewModel'),
           HeaderView = require('views/headerView'),
           MonthView = require('views/monthView'),
-          NoteFormView = require('views/formView');
+          NoteView = require('views/formView');
 
       app.router = new NoteRouter();
-      app.notes = new NoteCollection({});
+      app.notes = new NoteCollection();
       app.appModel = new NoteAppModel();
-      app.headerView = new HeaderView({ model : app.appModel });
-      app.monthView = new MonthView({ model : app.appModel, collection: app.notes, attributes: {
-          'formConst': NoteFormView,
-          'modelConst': NoteModel
-      }});
+      app.headerView = new HeaderView();
+      app.monthView = new MonthView();
+      app.noteViewModel = new NoteViewModel();
+      app.noteView = new NoteView({ model: app.noteViewModel });
 
       app.appModel.on('change', function() {
           var m = app.appModel.get('month'),
@@ -118,25 +117,9 @@ Application = {
           this.render(app.appModel);
           app.router.navigate('calendar/'+m+'-'+y);
       }, app.monthView);
-
-      app.router.on('route:calendar', function(month, year) {
-          var now = new Date(),
-              day = now.getDate();
-
-          month = parseInt(month) || now.getMonth() + 1;
-          year = parseInt(year) || now.getYear() + 1900;
-
-          app.appModel.set({
-              'month' : month,
-              'year' : year
-          });
-      });
-
-      app.router.on('route:note', function(){
-          console.log('Show form');
-      });
   }
 }
+
 module.exports = Application;
 
 });
@@ -209,14 +192,31 @@ module.exports = {
 });
 
 require.register("lib/router", function(exports, require, module) {
-var application = require('application');
+var app = require('application');
 
 module.exports = Backbone.Router.extend({
     routes: {
         '' : 'calendar',
-        'calendar()/' : 'calendar',
-        'calendar/:month-:year' : 'calendar',
-        'calendar/note' : 'note'
+        'calendar(/)' : 'calendar',
+        'calendar/:month-:year(/)' : 'calendar',
+        'calendar/note/:day-:month-:year(/)' : 'note'
+    },
+
+    'calendar': function(month, year) {
+        var now = new Date(),
+            day = now.getDate();
+
+        month = parseInt(month) || now.getMonth() + 1;
+        year = parseInt(year) || now.getYear() + 1900;
+
+        app.appModel.set({
+            'month' : month,
+            'year' : year
+        });
+    },
+
+    'note': function(day, month, year) {
+        console.log(day, month, year);
     }
 });
 
@@ -361,11 +361,23 @@ module.exports = Backbone.Model.extend({
 
 });
 
+require.register("models/noteViewModel", function(exports, require, module) {
+module.exports = Backbone.Model.extend({
+    defaults: {
+        'form_title' : '',
+        'form_text'  : ''
+    }
+});
+});
+
 require.register("views/formView", function(exports, require, module) {
 /**
- * Created by echuvelev on 26/11/14.
+ * Created by Evgeny Chuvelev on 26/11/14.
  */
+
+var app = require('/application');
 var template = require('./templates/form');
+var NoteModel = require('/models/noteModel');
 
 module.exports = Backbone.View.extend({
     el: $('[data-view="form-view"]'),
@@ -374,33 +386,77 @@ module.exports = Backbone.View.extend({
 
     events: {
         'click a[data-click="save"]': 'saveNote',
-        'click a[data-click="cancel"]': 'close'
+        'click a[data-click="remove"]': 'removeNote',
+        'click a[data-click="cancel"]': 'closeNote'
+    },
+
+    hide: function() {
+        this.$el.removeClass('notes__form--show');
+        app.headerView.showControls();
+    },
+
+    show: function() {
+        this.$el.addClass('notes__form--show');
+        app.headerView.hideControls();
+    },
+
+    closeNote: function() {
+        this.hide();
+        app.monthView.show();
     },
 
     imposeNote: function($el) {
         $el.addClass('day--planned');
     },
 
-    saveNote: function() {
-        var data = this.$el.find('form').serializeArray();
-
-        for(var i = 0; i < data.length; i++ ) {
-            this.model.set(data[i].name, data[i].value);
-        }
-        this.collection.add(this.model);
-        this.imposeNote(this.attributes.$targetDay);
+    unImposeNote: function($el) {
+        $el.removeClass('day--planned');
     },
 
-    close: function() {
+    removeNote: function() {
+        var note = this.model.get('model'),
+            $target = this.model.get('$target');
 
+        app.notes.remove(note);
+        this.unImposeNote($target);
+        this.closeNote();
+    },
+
+    saveNote: function(event) {
+        var data = this.$el.find('form').serializeArray(),
+            note = this.model.get('model'),
+            $target = this.model.get('$target');
+
+        if ( note ) {
+            var emptyInputs = 0;
+            for( var i = 0; i < data.length; i++ ) {
+                note.set(data[i].name, data[i].value);
+
+                if( data[i].value === '') {
+                    emptyInputs++;
+                }
+            }
+        } else {
+            var newNote = new NoteModel({
+                'date' : this.model.get('date')
+            });
+            for ( var i = 0; i < data.length; i++ ) {
+                newNote.set(data[i].name, data[i].value);
+            }
+            app.notes.add(newNote);
+            this.imposeNote($target);
+        }
+
+        this.closeNote();
     },
 
     initialize: function() {
         this.render();
-        console.log(this.collection);
+        this.model.on('change', this.render, this);
     },
 
-    render: function(){
+    render: function() {
+        console.log(app.notes);
         this.$el.html(this.template(this.model.toJSON()));
     }
 });
@@ -410,13 +466,14 @@ require.register("views/headerView", function(exports, require, module) {
 /**
  * Created by Evgeny Chuvelev on 26/11/14.
  */
+var app = require('application');
 
 module.exports = Backbone.View.extend({
     el: $('[data-view="header-view"]'),
 
     initialize: function(){
-        this.model.on('change:year', this.updateYear, this);
-        this.model.on('change:month', this.updateMonth, this);
+        app.appModel.on('change:year', this.updateYear, this);
+        app.appModel.on('change:month', this.updateMonth, this);
     },
 
     events: {
@@ -424,22 +481,32 @@ module.exports = Backbone.View.extend({
         'click [data-click="next-month"]' : 'nextMonth'
     },
 
+    hideControls: function() {
+      var $controls = $('[data-click]');
+      $controls.addClass('notes__header-trigger--hide');
+    },
+
+    showControls: function() {
+        var $controls = $('[data-click]');
+        $controls.removeClass('notes__header-trigger--hide');
+    },
+
     prevMonth: function() {
-        this.model.setPrevMonth();
+        app.appModel.setPrevMonth();
     },
 
     nextMonth: function() {
-        this.model.setNextMonth();
+        app.appModel.setNextMonth();
     },
 
     updateYear: function() {
         var $yearPlacement = this.$el.find('[data-bind="state-year"]');
-        $yearPlacement.html(this.model.get('year'));
+        $yearPlacement.html(app.appModel.get('year'));
     },
 
     updateMonth: function() {
         var $monthPlacement = this.$el.find('[data-bind="state-month"]');
-        $monthPlacement.html(this.model.getMonthName());
+        $monthPlacement.html(app.appModel.getMonthName());
     }
 });
 
@@ -449,11 +516,11 @@ require.register("views/monthView", function(exports, require, module) {
 /**
  * Created by Evgeny Chuvelev on 26/11/14.
  */
-var application = require('/application');
+var app = require('/application');
 var template = require('./templates/month');
 
 module.exports = Backbone.View.extend({
-    el: $('[data-bind="date-of-the-month"]'),
+    el: $('[data-view="month-view"]'),
 
     template: template,
 
@@ -461,14 +528,17 @@ module.exports = Backbone.View.extend({
         'click td': 'displayNote'
     },
 
-    imposeNote: function($el) {
-        $el.addClass('day--planned');
+    show: function() {
+      this.$el.addClass('notes__body--show');
+    },
+
+    hide: function() {
+        this.$el.removeClass('notes__body--show');
     },
 
     imposeNotes: function(){
-        var notes = application.notes.toJSON(),
-            $dates = this.$el.find('[data-date]'),
-            self = this;
+        var notes = app.notes.toJSON(),
+            $dates = this.$el.find('[data-date]');
 
         _.each(notes, function(note) {
             $dates.filter('[data-date="' + note.date + '"]').addClass('day--planned');
@@ -476,45 +546,41 @@ module.exports = Backbone.View.extend({
     },
 
     displayNote: function(event) {
-
-        console.log(application.notes);
-
         var $target = $(event.currentTarget),
             targetDate = $target.data('date'),
-            targetNoteInCollection = application.notes.findWhere({ date : targetDate}),
-            textNote;
+            targetNoteInCollection = app.notes.findWhere({ date : targetDate});
 
-        if ( targetNoteInCollection ) {
-            textNote = prompt('Введите текст', targetNoteInCollection.get('text'));
-            if (textNote && textNote.length) {
-                targetNoteInCollection.set('text', textNote);
-            }
-            return;
-        }
+        this.hide();
+        app.noteView.show();
 
-        textNote = prompt('Введите текст');
-        if ( textNote && textNote.length ) {
-            application.notes.add({
-                'date' : targetDate,
-                'text' : textNote
+        app.noteViewModel.set({
+            'date' : targetDate,
+            '$target' : $target,
+            'text' : '',
+            'title' : '',
+            'model' : ''
+        });
+
+        if (targetNoteInCollection) {
+            app.noteViewModel.set({
+                'title': targetNoteInCollection.get('title'),
+                'text': targetNoteInCollection.get('text'),
+                'model' : targetNoteInCollection
             });
-            this.imposeNote($target);
         }
-
-        return;
     },
 
     initialize: function() {
         this.render();
+        this.show();
     },
 
     render: function() {
-        var month = this.model.get('month'),
-            year = this.model.get('year'),
-            length = this.model.getMonthLength(),
-            firstWeekDay = this.model.getFisrtWeekDay(),
-            prevMonthLength = this.model.getPrevMonthLength(),
-            self = this;
+        var month = app.appModel.get('month'),
+            year = app.appModel.get('year'),
+            length = app.appModel.getMonthLength(),
+            firstWeekDay = app.appModel.getFisrtWeekDay(),
+            prevMonthLength = app.appModel.getPrevMonthLength();
 
         function getMonthModel(month, year, length) {
             var days = {},
@@ -523,7 +589,7 @@ module.exports = Backbone.View.extend({
             // add prev month days
             if (firstWeekDay !== 1) {
                 var prevMonthDays = (firstWeekDay !== 0) ? firstWeekDay - 1 : 6,
-                    pMonth = self.model.getPrevMonth();
+                    pMonth = app.appModel.getPrevMonth();
                 p = prevMonthLength - prevMonthDays + 1;
                 while (prevMonthDays) {
                     days[counter] = {
@@ -550,7 +616,7 @@ module.exports = Backbone.View.extend({
             // add next month days
             if (counter != 42) {
                 var nMonthDays = 42 - counter,
-                    nMonth = self.model.getNextMonth();
+                    nMonth = app.appModel.getNextMonth();
                 n = 1;
                 while (nMonthDays >= n) {
                     days[counter] = {
@@ -589,10 +655,10 @@ module.exports = Backbone.View.extend({
         }
 
 
-        var m = getMonthModel(month,year,length);
-        m = setWeeks(m);
+        var month = getMonthModel(month,year,length);
+        month = setWeeks(month);
 
-        this.$el.html(this.template(_.toArray(m)));
+        this.$el.find('[data-bind="date-of-the-month"]').html(this.template(_.toArray(month)));
         this.imposeNotes();
     }
 });
@@ -601,25 +667,39 @@ module.exports = Backbone.View.extend({
 require.register("views/templates/form", function(exports, require, module) {
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, foundHelper, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, stack2, foundHelper, tmp1, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
 
+function program1(depth0,data) {
+  
+  
+  return "\n            <a data-click=\"remove\">Удалить</a>\n        ";}
 
-  buffer += "<form>\n    <h2>Дата: ";
+  buffer += "<form class=\"notes__form-wrapper\">\n    <div class=\"notes__form-date\">";
   foundHelper = helpers.date;
   stack1 = foundHelper || depth0.date;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
   else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "date", { hash: {} }); }
-  buffer += escapeExpression(stack1) + "</h2>\n    <div>\n        <label for=\"title\">День под девизом</label>\n        <input type=\"text\" name=\"title\" value=\"";
+  buffer += escapeExpression(stack1) + "</div>\n    <div class=\"notes__form-title\">\n        <label class=\"notes__form-label\" for=\"title\">День под девизом</label>\n        <input type=\"text\" name=\"title\" id=\"title\" class=\"notes__form-title__input\" value=\"";
   foundHelper = helpers.title;
   stack1 = foundHelper || depth0.title;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
   else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "title", { hash: {} }); }
-  buffer += escapeExpression(stack1) + "\">\n    </div>\n    <div>\n        <label for=\"text\">Заметки</label>\n        <textarea name=\"text\" id=\"\" cols=\"30\" rows=\"10\">";
+  buffer += escapeExpression(stack1) + "\">\n    </div>\n    <div class=\"notes__form-text\">\n        <label class=\"notes__form-label\" for=\"text\">Заметка</label>\n        <textarea class=\"notes__form-text__textarea\" name=\"text\" id=\"\">";
   foundHelper = helpers.text;
   stack1 = foundHelper || depth0.text;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
   else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "text", { hash: {} }); }
-  buffer += escapeExpression(stack1) + "</textarea>\n    </div>\n    <a data-click=\"save\">Сохранить</a>\n    <a data-click=\"cancel\">Отмена</a>\n</form>";
+  buffer += escapeExpression(stack1) + "</textarea>\n    </div>\n    <div class=\"notes__buttons\">\n        <a data-click=\"save\">Сохранить</a>\n        <a data-click=\"cancel\">Отмена</a>\n        ";
+  foundHelper = helpers.model;
+  stack1 = foundHelper || depth0.model;
+  stack2 = helpers['if'];
+  tmp1 = self.program(1, program1, data);
+  tmp1.hash = {};
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  stack1 = stack2.call(depth0, stack1, tmp1);
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </div>\n</form>";
   return buffer;});
 });
 

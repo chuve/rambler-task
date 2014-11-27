@@ -51,6 +51,7 @@ body {
   height: 100%;
 }
 .notes {
+  position: relative;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -67,6 +68,7 @@ body {
   }
 }
 .notes__header {
+  position: relative;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -74,6 +76,7 @@ body {
   text-align: center;
   padding: 15px 10px;
   background-color: #eee;
+  z-index: 2000;
 }
 .notes__header-trigger {
   display: inline-block;
@@ -85,6 +88,9 @@ body {
 .notes__header-trigger[data-click="next-month"] {
   float: right;
 }
+.notes__header-trigger--hide {
+  display: none;
+}
 .notes__state {
   display: inline-block;
   font-weight: bold;
@@ -92,10 +98,21 @@ body {
   color: #222;
 }
 .notes__body {
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -o-transition: all 1s;
+  -ms-transition: all 1s;
+  transition: all 1s;
   height: 100%;
   width: 100%;
   border-collapse: collapse;
   font-size: 1.5em;
+  position: absolute;
+  top: -100%;
+  z-index: 1000;
+}
+.notes__body--show {
+  top: 46px;
 }
 @media screen and (max-width: 1024px) {
   .notes__body {
@@ -145,6 +162,69 @@ body {
 }
 .notes__body .day--non-current {
   color: #d2d2d2;
+}
+.notes__form {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: -100%;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -o-transition: all 1s;
+  -ms-transition: all 1s;
+  transition: all 1s;
+  z-index: 1000;
+  background: #70c469;
+  text-align: center;
+}
+.notes__form--show {
+  top: 46px;
+}
+.notes__form-wrapper {
+  height: 100%;
+}
+.notes__form-date {
+  font-size: 30px;
+  padding: 20px 0;
+}
+.notes__form-label {
+  font-size: 1em;
+  text-transform: uppercase;
+  display: block;
+}
+.notes__form-title__input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  width: 95%;
+  height: 50px;
+  margin: 10px auto 20px auto;
+  padding: 15px;
+  font-size: 1.5em;
+}
+.notes__form-text__textarea {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  width: 95%;
+  height: 200px;
+  margin: 10px auto 20px auto;
+  padding: 15px;
+  font-size: 1.2em;
+}
+.notes__form a[data-click] {
+  cursor: pointer;
+  text-align: center;
+  display: block;
+  padding: 10px 20px;
+  margin: 5px auto;
+  color: #2c2c2c;
+  background: #eee;
+  font-size: 1em;
+  text-transform: uppercase;
+  max-width: 300px;
 }
 
 
