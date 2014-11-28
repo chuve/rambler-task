@@ -387,7 +387,8 @@ module.exports = Backbone.View.extend({
     events: {
         'click a[data-click="save"]': 'saveNote',
         'click a[data-click="remove"]': 'removeNote',
-        'click a[data-click="cancel"]': 'closeNote'
+        'click a[data-click="cancel"]': 'closeNote',
+        'swipeup': 'closeNote'
     },
 
     hide: function() {
@@ -456,7 +457,6 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
-        console.log(app.notes);
         this.$el.html(this.template(this.model.toJSON()));
     }
 });
@@ -525,7 +525,17 @@ module.exports = Backbone.View.extend({
     template: template,
 
     events: {
-        'click td': 'displayNote'
+        'click td': 'displayNote',
+        'swipeleft': 'prevMonth',
+        'swiperight': 'nextMonth'
+    },
+
+    prevMonth: function() {
+        app.appModel.setPrevMonth();
+    },
+
+    nextMonth: function() {
+        app.appModel.setNextMonth();
     },
 
     show: function() {
