@@ -71,11 +71,12 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
-        var month = app.appModel.get('month'),
-            year = app.appModel.get('year'),
+        var currentMonth = app.appModel.get('month'),
+            currentYear = app.appModel.get('year'),
             length = app.appModel.getMonthLength(),
             firstWeekDay = app.appModel.getFisrtWeekDay(),
-            prevMonthLength = app.appModel.getPrevMonthLength();
+            prevMonthLength = app.appModel.getPrevMonthLength(),
+            todayKey;
 
         function getMonthModel(month, year, length) {
             var days = {},
@@ -86,6 +87,7 @@ module.exports = Backbone.View.extend({
                 var prevMonthDays = (firstWeekDay !== 0) ? firstWeekDay - 1 : 6,
                     pMonth = app.appModel.getPrevMonth();
                 p = prevMonthLength - prevMonthDays + 1;
+                todayKey = prevMonthDays;
                 while (prevMonthDays) {
                     days[counter] = {
                         num : p,
@@ -146,11 +148,17 @@ module.exports = Backbone.View.extend({
                 days[key].weekend = true;
             });
 
+            var date = new Date();
+
+            if (date.getMonth()+1 === currentMonth && date.getFullYear() === currentYear) {
+                var today = todayKey + date.getDate() - 1;
+                days[today].today = true;
+            }
+
             return days;
         }
 
-
-        var month = getMonthModel(month,year,length);
+        var month = getMonthModel(currentMonth,currentYear,length);
         month = setWeeks(month);
 
         this.$el.find('[data-bind="date-of-the-month"]').html(this.template(_.toArray(month)));

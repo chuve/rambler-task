@@ -586,11 +586,12 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
-        var month = app.appModel.get('month'),
-            year = app.appModel.get('year'),
+        var currentMonth = app.appModel.get('month'),
+            currentYear = app.appModel.get('year'),
             length = app.appModel.getMonthLength(),
             firstWeekDay = app.appModel.getFisrtWeekDay(),
-            prevMonthLength = app.appModel.getPrevMonthLength();
+            prevMonthLength = app.appModel.getPrevMonthLength(),
+            todayKey;
 
         function getMonthModel(month, year, length) {
             var days = {},
@@ -601,6 +602,7 @@ module.exports = Backbone.View.extend({
                 var prevMonthDays = (firstWeekDay !== 0) ? firstWeekDay - 1 : 6,
                     pMonth = app.appModel.getPrevMonth();
                 p = prevMonthLength - prevMonthDays + 1;
+                todayKey = prevMonthDays;
                 while (prevMonthDays) {
                     days[counter] = {
                         num : p,
@@ -661,11 +663,17 @@ module.exports = Backbone.View.extend({
                 days[key].weekend = true;
             });
 
+            var date = new Date();
+
+            if (date.getMonth()+1 === currentMonth && date.getFullYear() === currentYear) {
+                var today = todayKey + date.getDate() - 1;
+                days[today].today = true;
+            }
+
             return days;
         }
 
-
-        var month = getMonthModel(month,year,length);
+        var month = getMonthModel(currentMonth,currentYear,length);
         month = setWeeks(month);
 
         this.$el.find('[data-bind="date-of-the-month"]').html(this.template(_.toArray(month)));
@@ -738,14 +746,14 @@ function program1(depth0,data) {
   tmp1 = self.program(4, program4, data);
   tmp1.hash = {};
   tmp1.fn = tmp1;
-  tmp1.inverse = self.program(7, program7, data);
+  tmp1.inverse = self.program(9, program9, data);
   stack1 = stack2.call(depth0, stack1, tmp1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    ";
   foundHelper = helpers.endWeek;
   stack1 = foundHelper || depth0.endWeek;
   stack2 = helpers['if'];
-  tmp1 = self.program(9, program9, data);
+  tmp1 = self.program(11, program11, data);
   tmp1.hash = {};
   tmp1.fn = tmp1;
   tmp1.inverse = self.noop;
@@ -766,11 +774,20 @@ function program4(depth0,data) {
   stack1 = foundHelper || depth0.date;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
   else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "date", { hash: {} }); }
-  buffer += escapeExpression(stack1) + "\" class=\"day ";
+  buffer += escapeExpression(stack1) + "\" class=\"day";
+  foundHelper = helpers.today;
+  stack1 = foundHelper || depth0.today;
+  stack2 = helpers['if'];
+  tmp1 = self.program(5, program5, data);
+  tmp1.hash = {};
+  tmp1.fn = tmp1;
+  tmp1.inverse = self.noop;
+  stack1 = stack2.call(depth0, stack1, tmp1);
+  if(stack1 || stack1 === 0) { buffer += stack1; }
   foundHelper = helpers.weekend;
   stack1 = foundHelper || depth0.weekend;
   stack2 = helpers['if'];
-  tmp1 = self.program(5, program5, data);
+  tmp1 = self.program(7, program7, data);
   tmp1.hash = {};
   tmp1.fn = tmp1;
   tmp1.inverse = self.noop;
@@ -786,9 +803,14 @@ function program4(depth0,data) {
 function program5(depth0,data) {
   
   
-  return "day--weekend";}
+  return " day--today";}
 
 function program7(depth0,data) {
+  
+  
+  return " day--weekend";}
+
+function program9(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n            <td data-date=\"";
@@ -804,7 +826,7 @@ function program7(depth0,data) {
   buffer += escapeExpression(stack1) + "</span></td>\n    ";
   return buffer;}
 
-function program9(depth0,data) {
+function program11(depth0,data) {
   
   
   return "</tr>";}

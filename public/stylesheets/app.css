@@ -68,33 +68,25 @@ body {
   }
 }
 .notes__header {
+  display: table;
   position: relative;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   width: 100%;
+  height: 10%;
   text-align: center;
-  padding: 15px 10px;
   background-color: #eee;
   z-index: 2000;
 }
 .notes__header-trigger {
-  display: inline-block;
+  display: table-cell;
+  vertical-align: middle;
   cursor: pointer;
-  padding: 10px;
-  margin-top: -10px;
-}
-.notes__header-trigger[data-click="prev-month"] {
-  float: left;
-}
-.notes__header-trigger[data-click="next-month"] {
-  float: right;
 }
 .notes__header-trigger--hide {
   display: none;
 }
 .notes__state {
-  display: inline-block;
+  display: table-cell;
+  vertical-align: middle;
   font-weight: bold;
   text-transform: uppercase;
   color: #222;
@@ -105,7 +97,7 @@ body {
   -o-transition: all 1s;
   -ms-transition: all 1s;
   transition: all 1s;
-  height: 100%;
+  height: 90%;
   width: 100%;
   border-collapse: collapse;
   font-size: 1.5em;
@@ -114,7 +106,7 @@ body {
   z-index: 1000;
 }
 .notes__body--show {
-  top: 46px;
+  top: 10%;
 }
 @media screen and (max-width: 1024px) {
   .notes__body {
@@ -125,6 +117,7 @@ body {
   font-weight: bold;
 }
 .notes__body thead td {
+  vertical-align: middle;
   background-color: #70c469;
   color: #fff;
   padding: 0.6em;
@@ -133,6 +126,7 @@ body {
   text-transform: uppercase;
 }
 .notes__body tbody td {
+  vertical-align: middle;
   background-color: #eee;
   color: #6f6f6f;
   text-align: center;
@@ -162,12 +156,18 @@ body {
 .notes__body .day--weekend {
   color: #ff6347;
 }
+.notes__body .day--today .day__num {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  border: 1px solid #ff6347;
+}
 .notes__body .day--non-current {
   color: #d2d2d2;
 }
 .notes__form {
   width: 100%;
-  height: 100%;
+  height: 90%;
   position: absolute;
   top: -100%;
   -webkit-transition: all 1s;
@@ -180,7 +180,7 @@ body {
   text-align: center;
 }
 .notes__form--show {
-  top: 46px;
+  top: 10%;
 }
 .notes__form-wrapper {
   height: 100%;

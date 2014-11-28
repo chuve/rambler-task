@@ -20,38 +20,32 @@ body
     padding 5%
 
   &__header
+    display table
     position relative
-    box-sizing border-box
     width 100%
+    height 10%
     text-align center
-    padding 15px 10px
     background-color rgb(238, 238, 238)
     z-index 2000
 
     &-trigger
-      display inline-block
+      display table-cell
+      vertical-align middle
       cursor pointer
-      padding 10px
-      margin-top -10px
-
-      &[data-click="prev-month"]
-        float left
-
-      &[data-click="next-month"]
-        float right
 
       &--hide
         display none
 
   &__state
-    display inline-block
+    display table-cell
+    vertical-align middle
     font-weight bold
     text-transform uppercase
     color #222222
 
   &__body
     transition all 1s
-    height 100%
+    height 90%
     width 100%
     border-collapse collapse
     font-size 1.5em
@@ -60,7 +54,7 @@ body
     z-index 1000
 
     &--show
-      top 46px
+      top 10%
 
     @media screen and (max-width: 1024px)
       &
@@ -70,6 +64,7 @@ body
       font-weight bold
 
       td
+        vertical-align middle
         background-color rgb(112, 196, 105)
         color white
         padding 0.6em
@@ -79,6 +74,7 @@ body
 
     tbody
       td
+        vertical-align middle
         background-color rgb(238, 238, 238)
         color rgb(111, 111, 111)
         text-align center
@@ -107,12 +103,17 @@ body
       &--weekend
         color tomato
 
+      &--today
+        .day__num
+          border-radius 50%
+          border 1px solid tomato
+
       &--non-current
         color rgb(210, 210, 210)
 
   &__form
     width 100%
-    height 100%
+    height 90%
     position absolute
     top -100%
     transition all 1s
@@ -121,7 +122,7 @@ body
     text-align center
 
     &--show
-      top 46px
+      top 10%
 
     &-wrapper
       height 100%
