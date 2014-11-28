@@ -526,8 +526,8 @@ module.exports = Backbone.View.extend({
 
     events: {
         'click td': 'displayNote',
-        'swipeleft': 'prevMonth',
-        'swiperight': 'nextMonth'
+        'swiperight': 'prevMonth',
+        'swipeleft': 'nextMonth'
     },
 
     prevMonth: function() {
