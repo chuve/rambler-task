@@ -4,9 +4,6 @@ Calendar with notes
 Example: [http://chuve.github.io/rambler-task/](http://chuve.github.io/rambler-task/)
 
 ##Todo list
-- form view for add notes
-- switch views with animation effect
-- mark current date
 - generate JSDOC
 - function tests
 
