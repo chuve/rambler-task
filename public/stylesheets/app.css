@@ -160,7 +160,7 @@ body {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
-  border: 1px solid #ff6347;
+  border: 1px solid #2c2c2c;
 }
 .notes__body .day--non-current {
   color: #d2d2d2;
