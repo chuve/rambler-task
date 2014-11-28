@@ -128,7 +128,7 @@ body
       height 100%
 
     &-date
-      font-size 30px
+      font-size 1.2em
       padding 20px 0
 
     &-label
@@ -146,8 +146,12 @@ body
         padding 15px
         font-size 1.5em
 
+        @media screen and (max-width: 1024px)
+          &
+            font-size 1em
+
     &-text
-      height 40%
+      height 30%
 
       &__textarea
         box-sizing border-box
@@ -157,6 +161,10 @@ body
         margin 10px auto 20px auto
         padding 15px
         font-size 1.2em
+
+        @media screen and (max-width: 1024px)
+          &
+            font-size 0.8em
 
     a[data-click]
       cursor pointer

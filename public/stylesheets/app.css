@@ -186,7 +186,7 @@ body {
   height: 100%;
 }
 .notes__form-date {
-  font-size: 30px;
+  font-size: 1.2em;
   padding: 20px 0;
 }
 .notes__form-label {
@@ -205,8 +205,13 @@ body {
   padding: 15px;
   font-size: 1.5em;
 }
+@media screen and (max-width: 1024px) {
+  .notes__form-title__input {
+    font-size: 1em;
+  }
+}
 .notes__form-text {
-  height: 40%;
+  height: 30%;
 }
 .notes__form-text__textarea {
   -webkit-box-sizing: border-box;
@@ -218,6 +223,11 @@ body {
   margin: 10px auto 20px auto;
   padding: 15px;
   font-size: 1.2em;
+}
+@media screen and (max-width: 1024px) {
+  .notes__form-text__textarea {
+    font-size: 0.8em;
+  }
 }
 .notes__form a[data-click] {
   cursor: pointer;
