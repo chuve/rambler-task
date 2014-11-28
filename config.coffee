@@ -10,6 +10,7 @@ exports.config =
       order:
         before: [
           'bower_components/jquery/dist/jquery.js',
+          'vendor/scripts/jQuery-Touch-Events/jquery.mobile-events.min.js'
           'vendor/scripts/console-helper.js',
         ]
 

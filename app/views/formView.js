@@ -14,7 +14,8 @@ module.exports = Backbone.View.extend({
     events: {
         'click a[data-click="save"]': 'saveNote',
         'click a[data-click="remove"]': 'removeNote',
-        'click a[data-click="cancel"]': 'closeNote'
+        'click a[data-click="cancel"]': 'closeNote',
+        'swipeup': 'closeNote'
     },
 
     hide: function() {
@@ -83,7 +84,6 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
-        console.log(app.notes);
         this.$el.html(this.template(this.model.toJSON()));
     }
 });

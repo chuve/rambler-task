@@ -10,7 +10,17 @@ module.exports = Backbone.View.extend({
     template: template,
 
     events: {
-        'click td': 'displayNote'
+        'click td': 'displayNote',
+        'swipeleft': 'prevMonth',
+        'swiperight': 'nextMonth'
+    },
+
+    prevMonth: function() {
+        app.appModel.setPrevMonth();
+    },
+
+    nextMonth: function() {
+        app.appModel.setNextMonth();
     },
 
     show: function() {
