@@ -13,7 +13,7 @@ module.exports = Backbone.Router.extend({
             day = now.getDate();
 
         month = parseInt(month) || now.getMonth() + 1;
-        year = parseInt(year) || now.getYear() + 1900;
+        year = parseInt(year) || now.getFullYear();
 
         app.appModel.set({
             'month' : month,

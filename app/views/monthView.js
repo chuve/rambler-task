@@ -76,7 +76,7 @@ module.exports = Backbone.View.extend({
             length = app.appModel.getMonthLength(),
             firstWeekDay = app.appModel.getFisrtWeekDay(),
             prevMonthLength = app.appModel.getPrevMonthLength(),
-            todayKey;
+            todayKey = 0;
 
         function getMonthModel(month, year, length) {
             var days = {},

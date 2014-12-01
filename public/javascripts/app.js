@@ -207,7 +207,7 @@ module.exports = Backbone.Router.extend({
             day = now.getDate();
 
         month = parseInt(month) || now.getMonth() + 1;
-        year = parseInt(year) || now.getYear() + 1900;
+        year = parseInt(year) || now.getFullYear();
 
         app.appModel.set({
             'month' : month,
@@ -458,6 +458,7 @@ module.exports = Backbone.View.extend({
 
     render: function() {
         this.$el.html(this.template(this.model.toJSON()));
+        $('input').focus();
     }
 });
 });
@@ -591,7 +592,7 @@ module.exports = Backbone.View.extend({
             length = app.appModel.getMonthLength(),
             firstWeekDay = app.appModel.getFisrtWeekDay(),
             prevMonthLength = app.appModel.getPrevMonthLength(),
-            todayKey;
+            todayKey = 0;
 
         function getMonthModel(month, year, length) {
             var days = {},
@@ -702,7 +703,7 @@ function program1(depth0,data) {
   stack1 = foundHelper || depth0.title;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
   else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "title", { hash: {} }); }
-  buffer += escapeExpression(stack1) + "\">\n    </div>\n    <div class=\"notes__form-text\">\n        <label class=\"notes__form-label\" for=\"text\">Заметка</label>\n        <textarea class=\"notes__form-text__textarea\" name=\"text\" id=\"\">";
+  buffer += escapeExpression(stack1) + "\">\n    </div>\n    <div class=\"notes__form-text\">\n        <label class=\"notes__form-label\" for=\"text\">Заметка</label>\n        <textarea class=\"notes__form-text__textarea\" name=\"text\" id=\"text\">";
   foundHelper = helpers.text;
   stack1 = foundHelper || depth0.text;
   if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
