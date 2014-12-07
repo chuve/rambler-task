@@ -92,6 +92,11 @@ body {
   text-transform: uppercase;
   color: #222;
 }
+@media screen and (max-width: 1024px) {
+  .notes__state {
+    font-size: 1em;
+  }
+}
 .notes__body {
   -webkit-transition: all 1s;
   -moz-transition: all 1s;
